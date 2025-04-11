@@ -6,29 +6,28 @@ import axios from 'axios'
 
 function App() {
 
-  const [actres, setActres] = useState([])
+  const [actor, setActor] = useState([])
   function actresapi() {
     axios.get('https://www.freetestapi.com/api/v1/actresses')
-      .then((result) => setActres(result.data))
-
+      .then((result) => setActor(oldArray => [...oldArray, ...result.data]))
   }
 
-  const [actor, setActor] = useState([])
   function actorsapi() {
     axios.get('https://www.freetestapi.com/api/v1/actors')
-      .then((result) => setActor(result.data))
-
+      .then((result) => {
+        setActor(oldArray => [...oldArray, ...result.data])
+      })
   }
 
-
+  console.log(actor)
   useEffect(actresapi, [])
   useEffect(actorsapi, [])
 
 
-  let actorsAndActres = [...actor, ...actres]
+  // let actorsAndActres = [...actor, ...actres].sort((a, b) => a.name.localeCompare(b.name, { ignorePunctuation: true }));
 
-  actorsAndActres = actorsAndActres.sort((firstItem, secondItem) => firstItem.name - secondItem.name);
-  console.log(actorsAndActres)
+
+
 
 
   return (
@@ -37,7 +36,7 @@ function App() {
         <div className="container text-center">
           <h2>ACCTRES and ACTORS</h2>
           <div className="d-flex flex-wrap gap-3">
-            {actorsAndActres.map(item => (
+            {actor.map(item => (
               <div key={item.id + item.name}>
                 <div className="card col-4" style={{ width: 18 + 'rem ' }}>
                   <img src={item.image} className="card-img-top" alt="..." />
