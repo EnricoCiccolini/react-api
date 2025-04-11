@@ -25,9 +25,10 @@ function App() {
   useEffect(actorsapi, [])
 
 
-  const actorsAndActres = [...actor, ...actres]
+  let actorsAndActres = [...actor, ...actres]
 
-
+  actorsAndActres = actorsAndActres.sort((firstItem, secondItem) => firstItem.name - secondItem.name);
+  console.log(actorsAndActres)
 
 
   return (
