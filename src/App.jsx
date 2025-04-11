@@ -7,21 +7,22 @@ import axios from 'axios'
 function App() {
 
   const [actor, setActor] = useState([])
-  function actresapi() {
-    axios.get('https://www.freetestapi.com/api/v1/actresses')
-      .then((result) => setActor(oldArray => [...oldArray, ...result.data]))
-  }
 
-  function actorsapi() {
-    axios.get('https://www.freetestapi.com/api/v1/actors')
-      .then((result) => {
-        setActor(oldArray => [...oldArray, ...result.data])
-      })
-  }
 
-  console.log(actor)
-  useEffect(actresapi, [])
-  useEffect(actorsapi, [])
+
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const promis1 = await fetch('https://www.freetestapi.com/api/v1/actresses')
+        const promis2 = await fetch('https://www.freetestapi.com/api/v1/actors')
+        const [attori, attrici] = await Promise.all([promis1.json(), promis2.json()])
+        const newArray = [...attori, ...attrici].sort((a, b) => a.name.localeCompare(b.name, { ignorePunctuation: true }))
+        setActor(newArray)
+      } catch (err) { console.error(err) }
+    })()
+  }, [])
+
 
 
   // let actorsAndActres = [...actor, ...actres].sort((a, b) => a.name.localeCompare(b.name, { ignorePunctuation: true }));
